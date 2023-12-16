@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CoinPriceResponseDTO
-{
-	private String symbol;
-
-	private String bidPrice;
-
-	private String askPrice;
-
+public class CoinWalletBalanceDTO {
+	private String coinName;
+	private float quantity;
 }

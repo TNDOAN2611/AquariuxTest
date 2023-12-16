@@ -5,35 +5,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-public class Coin {
-	@Id 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Coin
+{
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	private Integer id;
 
 	private String name;
+
 	@Column(name = "BIDPRICE")
 	private float bidPrice;
+
 	@Column(name = "ASKPRICE")
 	private float askPrice;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public float getBidPrice() {
-		return bidPrice;
-	}
-	public void setBidPrice(float bidPrice) {
-		this.bidPrice = bidPrice;
-	}
-	public float getAskPrice() {
-		return askPrice;
-	}
-	public void setAskPrice(float askPrice) {
-		this.askPrice = askPrice;
-	}
 }

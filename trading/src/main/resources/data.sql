@@ -1,3 +1,9 @@
 INSERT INTO coin(name, bidPrice, askPrice)VALUES
-  ('ETH', '0.0', '0.0'),
-  ('BTC', '0.0', '0.0');
+  ('ETH', '2000.0', '2005.0'),
+  ('BTC', '45000.0', '45005.0');
+
+INSERT INTO "USER"(username)VALUES
+('user1');
+
+INSERT INTO "USER_WALLET_BALANCE"( "USER_ID", "WALLETBALANCE", "WALLET_BALANCE_KEY")VALUES
+    ('1','50000.0', 'USDT');
