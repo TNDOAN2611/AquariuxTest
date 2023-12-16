@@ -42,22 +42,22 @@ public class TradingController
 		return new ResponseEntity<>(updatePriceService.getCoinPriceFromDatabase(), HttpStatus.OK);
 	}
 
-	@PostMapping("/openTradePosition")
-	public ResponseEntity<TradingTransactionDTO> openTradePosition(@RequestBody TradingInputRequestBody tradingInputRequestBody) throws UserDoesNotExistException, CoinDoesNotExistException, WalletBalanceDoesNotEnoughException
+	@PostMapping("/openTradeTransaction")
+	public ResponseEntity<TradingTransactionDTO> openTradeTransaction(@RequestBody TradingInputRequestBody tradingInputRequestBody) throws UserDoesNotExistException, CoinDoesNotExistException, WalletBalanceDoesNotEnoughException
 	{
 		return new ResponseEntity<>(tradingService.openTradingTransaction(tradingInputRequestBody), HttpStatus.OK);
+	}
+	
+	@PutMapping("/closedTradeTransaction/{positionNumber}")
+	public ResponseEntity<TradingTransactionDTO> closedTradeTransaction(@PathVariable Integer positionNumber) throws ClosedTradingTransactionException
+	{
+		return new ResponseEntity<>(tradingService.closedTradingTransaction(positionNumber), HttpStatus.OK);
 	}
 
 	@GetMapping("/walletBalance/{username}")
 	public ResponseEntity<List<CoinWalletBalanceDTO>> getUserWalletBalance(@PathVariable String username) throws UserDoesNotExistException
 	{
 		return new ResponseEntity<>(tradingService.getUserWalletBalance(username), HttpStatus.OK);
-	}
-
-	@PutMapping("/closedTradePosition/{positionNumber}")
-	public ResponseEntity<TradingTransactionDTO> closedTradePosition(@PathVariable Integer positionNumber) throws ClosedTradingTransactionException
-	{
-		return new ResponseEntity<>(tradingService.closedTradingTransaction(positionNumber), HttpStatus.OK);
 	}
 
 	@GetMapping("/tradingTransactionHistory/{username}")

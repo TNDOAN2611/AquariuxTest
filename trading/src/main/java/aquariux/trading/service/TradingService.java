@@ -14,6 +14,7 @@ import aquariux.trading.model.requestbody.TradingInputRequestBody;
 import aquariux.trading.repository.CoinRepository;
 import aquariux.trading.repository.TradingTransactionRepository;
 import aquariux.trading.repository.UserRepository;
+import aquariux.trading.service.factory.TradingTransactionFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,13 +41,17 @@ public class TradingService
 	final TradingTransactionRepository tradingTransactionRepository;
 
 	final TradingTransactionDTOMapper tradingTransactionDTOMapper;
+	
+	final TradingTransactionFactory tradingTransactionFactory;
 
-	public TradingService(UserRepository userRepository, CoinRepository coinRepository, TradingTransactionRepository tradingTransactionRepository, TradingTransactionDTOMapper tradingTransactionDTOMapper)
+	public TradingService(UserRepository userRepository, CoinRepository coinRepository, TradingTransactionRepository tradingTransactionRepository,
+			TradingTransactionDTOMapper tradingTransactionDTOMapper, TradingTransactionFactory tradingTransactionFactory)
 	{
 		this.userRepository = userRepository;
 		this.coinRepository = coinRepository;
 		this.tradingTransactionRepository = tradingTransactionRepository;
 		this.tradingTransactionDTOMapper = tradingTransactionDTOMapper;
+		this.tradingTransactionFactory = tradingTransactionFactory;
 	}
 
 	@Transactional
@@ -79,7 +84,7 @@ public class TradingService
 				if (isWalletBalanceEnoughForOrderTradingTransaction(usdtWalletBalance, price,
 				 tradingInputRequestBody.getVolume()))
 				{
-					TradingTransaction tradingTransaction = createTradingTransaction(orderType, price, user.get(), coin.get(),
+					TradingTransaction tradingTransaction = tradingTransactionFactory.createTradingTransaction(orderType, price, user.get(), coin.get(),
 					 tradingInputRequestBody.getVolume());
 					walletBalance.put(USDT, usdtWalletBalance - price * tradingInputRequestBody.getVolume());
 					walletBalance.put(coin.get().getName(), currentCoinWalletBalance + tradingInputRequestBody.getVolume());
@@ -109,20 +114,6 @@ public class TradingService
 	private boolean isWalletBalanceEnoughForOrderTradingTransaction(float usdtWalletBalance, float coinPrice, float volume)
 	{
 		return coinPrice * volume <= usdtWalletBalance;
-	}
-
-	private TradingTransaction createTradingTransaction(String orderType, float price, User user, Coin coin, float volume)
-	{
-		TradingTransaction tradingTransaction = new TradingTransaction();
-		tradingTransaction.setOrderType(orderType);
-		tradingTransaction.setCurrentPrice(price);
-		tradingTransaction.setEntryPrice(price);
-		tradingTransaction.setUser(user);
-		tradingTransaction.setCoin(coin);
-		tradingTransaction.setVolume(volume);
-		tradingTransaction.setStatus(OPEN_STATUS);
-
-		return tradingTransaction;
 	}
 
 	public List<CoinWalletBalanceDTO> getUserWalletBalance(String username) throws UserDoesNotExistException
