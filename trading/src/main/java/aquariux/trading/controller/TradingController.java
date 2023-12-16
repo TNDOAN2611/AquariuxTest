@@ -11,7 +11,6 @@ import aquariux.trading.model.requestbody.TradingInputRequestBody;
 import aquariux.trading.service.TradingService;
 import aquariux.trading.service.UpdatePriceService;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
