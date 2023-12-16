@@ -58,10 +58,11 @@ public class TradingControllerTest {
     	List<CoinPriceResponseDTO> coinPriceResponseDTOList = new ArrayList<>();
     	CoinPriceResponseDTO coinPriceResponseDTO = new CoinPriceResponseDTO(ETH, "2000", "2005");
     	coinPriceResponseDTOList.add(coinPriceResponseDTO);
-    	
     	Mockito.when(updatePriceService.getCoinPriceFromDatabase()).thenReturn(coinPriceResponseDTOList);
+    	
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(GET_COIN_PRICE_LIST_URL))
                 .andExpect(status().isOk()).andReturn();
+        
         assertEquals(result.getResponse().getContentAsString(),
                 objectMapper.writeValueAsString(coinPriceResponseDTOList));
     }
@@ -71,12 +72,13 @@ public class TradingControllerTest {
     	TradingInputRequestBody tradingInputRequestBody = new TradingInputRequestBody(USERNAME, ETH, SELL_ORDER, 1);
     	TradingTransactionDTO tradingTransactionDTO = new TradingTransactionDTO();
     	tradingTransactionDTO.setCoinName(ETH);
-    	tradingTransactionDTO.setVolume(1);
-    	
+    	tradingTransactionDTO.setVolume(1); 
     	Mockito.when(tradingService.openTradingTransaction(tradingInputRequestBody)).thenReturn(tradingTransactionDTO);
+    	
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post(OPEN_TRADING_TRANSACTION_URL).contentType(APPLICATION_JSON_UTF8)
                 .content(asJsonString(tradingInputRequestBody)))
                 .andExpect(status().isOk()).andReturn();
+        
         assertEquals(result.getResponse().getContentAsString(),
                 objectMapper.writeValueAsString(tradingTransactionDTO));
     }
@@ -84,7 +86,6 @@ public class TradingControllerTest {
     @Test
     void performOpenTradingTransactionThenReturnBadRequestStatus() throws Exception {
     	TradingInputRequestBody tradingInputRequestBody = new TradingInputRequestBody(USERNAME, ETH, SELL_ORDER, 1);
-
     	Mockito.when(tradingService.openTradingTransaction(tradingInputRequestBody)).thenThrow(UserDoesNotExistException.class);
     	
     	mvc.perform(MockMvcRequestBuilders.post(OPEN_TRADING_TRANSACTION_URL).contentType(APPLICATION_JSON_UTF8)
@@ -99,10 +100,11 @@ public class TradingControllerTest {
     	tradingTransactionDTO.setCoinName(ETH);
     	tradingTransactionDTO.setVolume(1);
     	tradingTransactionDTO.setTradingTransactionNumber(tradingTransactionNumber);
-    	
     	Mockito.when(tradingService.closedTradingTransaction(tradingTransactionNumber)).thenReturn(tradingTransactionDTO);
+    	
         MvcResult result = mvc.perform(MockMvcRequestBuilders.put(CLOSED_TRADING_TRANSACTION_URL + tradingTransactionNumber))
                 .andExpect(status().isOk()).andReturn();
+        
         assertEquals(result.getResponse().getContentAsString(),
                 objectMapper.writeValueAsString(tradingTransactionDTO));
     }
@@ -114,9 +116,9 @@ public class TradingControllerTest {
     	tradingTransactionDTO.setCoinName(ETH);
     	tradingTransactionDTO.setVolume(1);
     	tradingTransactionDTO.setTradingTransactionNumber(tradingTransactionNumber);
-    	
     	Mockito.when(tradingService.closedTradingTransaction(tradingTransactionNumber)).thenThrow(ClosedTradingTransactionException.class);
-        mvc.perform(MockMvcRequestBuilders.put(CLOSED_TRADING_TRANSACTION_URL + tradingTransactionNumber))
+        
+    	mvc.perform(MockMvcRequestBuilders.put(CLOSED_TRADING_TRANSACTION_URL + tradingTransactionNumber))
                 .andExpect(status().isBadRequest());
     }
     
@@ -125,11 +127,12 @@ public class TradingControllerTest {
     	List<CoinWalletBalanceDTO> coinWalletBalanceDTOList = new ArrayList<>();
     	CoinWalletBalanceDTO coinWalletBalanceDTO = new CoinWalletBalanceDTO(ETH, 10);
     	coinWalletBalanceDTOList.add(coinWalletBalanceDTO);
-    	
     	Mockito.when(tradingService.getUserWalletBalance(USERNAME)).thenReturn(coinWalletBalanceDTOList);
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(GET_USER_WALLET_BALANCE_URL + USERNAME))
+        
+    	MvcResult result = mvc.perform(MockMvcRequestBuilders.get(GET_USER_WALLET_BALANCE_URL + USERNAME))
                 .andExpect(status().isOk()).andReturn();
-        assertEquals(result.getResponse().getContentAsString(),
+        
+    	assertEquals(result.getResponse().getContentAsString(),
                 objectMapper.writeValueAsString(coinWalletBalanceDTOList));
     }
     
@@ -150,10 +153,11 @@ public class TradingControllerTest {
     	tradingTransactionDTO.setVolume(1);
     	tradingTransactionDTO.setTradingTransactionNumber(tradingTransactionNumber);
     	tradingTransactionDTOList.add(tradingTransactionDTO);
-    	
     	Mockito.when(tradingService.getTradingTransactionList(USERNAME)).thenReturn(tradingTransactionDTOList);
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(GET_USER_TRADING_TRANSACTION_HISTORY_URL + USERNAME))
+        
+    	MvcResult result = mvc.perform(MockMvcRequestBuilders.get(GET_USER_TRADING_TRANSACTION_HISTORY_URL + USERNAME))
                 .andExpect(status().isOk()).andReturn();
+    	
         assertEquals(result.getResponse().getContentAsString(),
                 objectMapper.writeValueAsString(tradingTransactionDTOList));
     }

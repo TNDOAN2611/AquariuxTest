@@ -74,9 +74,9 @@ public class TradingServiceTest {
     	tradingTransactionRepository = Mockito.mock(TradingTransactionRepository.class);
     	tradingTransactionDTOMapper = Mockito.mock(TradingTransactionDTOMapper.class);
     	tradingTransactionFactory = Mockito.mock(TradingTransactionFactoryImplement.class);
+    	
     	user = new User();
     	user.setUsername(USERNAME);
-    
     	coin = new Coin();
     	coin.setName(ETH);
     	coin.setAskPrice(2005);
@@ -151,7 +151,6 @@ public class TradingServiceTest {
 	
 	@Test()
 	void performGetUserWalletBalanceThenSuccess() throws UserDoesNotExistException {
-
 		List<CoinWalletBalanceDTO> result = testClass.getUserWalletBalance(USERNAME);
 		
 		assertEquals(result.get(0).getCoinName(), USDT);
@@ -223,12 +222,9 @@ public class TradingServiceTest {
     	tradingTransactionDTOList.add(openTradingTransactionDTO);
     	tradingTransactionDTOList.add(closedTradingTransactionDTO);
 
-    	
     	when(tradingTransactionDTOMapper.mapTradingTransactionDTOInfo(openTradingTransaction)).thenReturn(openTradingTransactionDTO);
     	when(tradingTransactionDTOMapper.mapTradingTransactionDTOInfo(closedTradingTransaction)).thenReturn(closedTradingTransactionDTO);
 
-
-		
 		List<TradingTransactionDTO> result = testClass.getTradingTransactionList(USERNAME);
 		assertEquals(result, tradingTransactionDTOList);
 	}
